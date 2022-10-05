@@ -16,7 +16,7 @@ class Main(APIView):
         if email is None:
             return render(request, "user/login.html")
 
-        user = User.objects.filter(email=email).first()
+        user = User.objects.filter(email=email).first() #현재 접속자
 
         if user is None:
             return render(request, "user/login.html")
@@ -27,15 +27,15 @@ class Main(APIView):
         feed_list = []
 
         # 이메일 아이디값에 저장된 값들을 통해서 나머지 값들을 불러온다
-        for feed in feed_object_list:
-            user = User.objects.filter(email=feed.email).first()
+        for feed in feed_object_list: #테이블에 있는 피드 검사
+            user_feed = User.objects.filter(email=feed.email).first() #각 피드를 작성한 사람
             reply_object_list = Reply.objects.filter(feed_id=feed.id)
             reply_list = []
             for reply in reply_object_list:
                 # 이메일로 값 찾아서 가져오기
-                user = User.objects.filter(email=reply.email).first()
+                user_reply = User.objects.filter(email=reply.email).first() #각 답글을 작성한 사람
                 reply_list.append(dict(reply_content=reply.reply_content,
-                                       nickname=user.nickname))
+                                       nickname=user_reply.nickname))
             #한개의 아이디에 is_like가 True인 것들의 개수를 센다                           
             like_count=Like.objects.filter(feed_id=feed.id, is_like=True).count()
             #내가 이 게시글을 좋아요를 눌렀는지 안눌렀는지를 조회(exists 좋아요를 눌렀으면 True 안누르면 False로 반환)
@@ -46,8 +46,8 @@ class Main(APIView):
                                   image=feed.image,
                                   content=feed.content,
                                   like_count=like_count,
-                                  profile_image=user.profile_image,
-                                  nickname=user.nickname,
+                                  profile_image=user_feed.profile_image,
+                                  nickname=user_feed.nickname,
                                   reply_list=reply_list,
                                   is_liked=is_liked,
                                   is_marked=is_marked

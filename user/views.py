@@ -7,6 +7,8 @@ from .models import User
 #패스워드 암호화하는 기능 추가
 from django.contrib.auth.hashers import make_password
 from palmTreeSns.settings import MEDIA_ROOT
+from django.http.response import JsonResponse
+from django.contrib import auth
 
 
 class Join(APIView):
@@ -58,7 +60,7 @@ class Login(APIView):
 class LogOut(APIView):
     def get(self, request):
         #로그아웃 때 세션 기록을 지워줘야함 flush사용
-        request.session.flush()
+        auth.logout(request)
         return render(request, "user/login.html")
 
 
@@ -68,6 +70,7 @@ class UploadProfile(APIView):
         #파일 불러오는 코드
         file = request.FILES['file']
         email = request.data.get('email')
+
         uuid_name = uuid4().hex
         save_path = os.path.join(MEDIA_ROOT, uuid_name)
 
@@ -85,3 +88,18 @@ class UploadProfile(APIView):
         #http 성공 응답코드 200
         return Response(status=200)
 
+class Follow(APIView):
+    def post(self, request):
+        email = request.data.get('email', None)
+        target_user = User.objects.get(email=email)
+        user = User.objects.filter(email=email).first()
+        user.follow.add(target_user)
+        user.save()
+        return JsonResponse({'status':"follow"})
+
+class ViewFollow(APIView):
+    def get(self, request):
+        email = request.data.get('email', None)
+        user = User.objects.get(email=email)
+        following = list(user.follow.all().values('email'))
+        return JsonResponse({'following':following})
