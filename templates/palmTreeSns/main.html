@@ -73,12 +73,12 @@
 <!-- 부트스트랩-네비바-기본 + 수정(search를 제외하고 전부 지움) -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light" style="position: fixed;width: 100%; z-index: 999">
     <div class="container-fluid" style="justify-content: space-between;flex-wrap: nowrap; min-width: 1000px">
-        <a class="navbar-brand" href="main"><img style="width: 100px; height: 50px;"
+        <a class="navbar-brand" href="/main"><img style="width: 100px; height: 50px;"
                                                  src="https://previews.dropbox.com/p/thumb/ABpXDV8rXR8o1VBYDzDiLXVCXbTu8MKDpVDm1YJLRkA_L7C4x7HZIKiL4iHklq1rRXbdOtY_vrofENA2f3hU1kd8DHYmDmoAwKxHsHmAXeoN2BKucS5s2sEqdVJusETKNDKKsPg7oDNbbVzcCGyC0zt0Myf6vhiVp6nsI0obbRMwFNlBhIBTrK2oEUg2OXUxuCrIKia6EE9_FpZFSmnO9LE2Cud7t18C42W1D8u5iipDO1GVX3Yi1QwxFwdasiEEF-VUmHi5vFoTQRhpuXnhcpfapDGG2rRsKfFIl5YpHMDHEM_AayORXo45jHRPUQAmgaoVNt7x0WeW8vRa8u2qpRVen7pOTefUr87h4cxHQzFmZ7eQAhlWMu6zFUb8bplnDMo/p.png">
         </a>
         <input class="form-control me-2" style="width: 400px" type="search" placeholder="Search" aria-label="Search">
         <div style="display: flex">
-            <a href="main" style="color: black"><span class="material-icons"
+            <a href="/main" style="color: black"><span class="material-icons"
                                                       style="padding-right: 10px"> home</span></a>
             <span id="nav_bar_add_box" class="material-icons-outlined" style="padding-right: 10px">add_box</span>
             <!-- 프사 누르면 내려오는 드랍다운 -->
@@ -114,18 +114,38 @@
         {% for feed in feeds %}
             <div class="feed_box">
                 <!-- 프로필 -->
-                <div style="display: flex;flex-direction: row; align-items: center; margin: 20px">
-                    <div class="box" style="width: 35px; height: 35px">
-                        <!-- 프로필 사진 -->
-                        <!-- Feed에서 가져온 profile_image데이터 넣기 -->
-                        <img class="profile"
-                             src="{% get_media_prefix %}{{ feed.profile_image }}">
-                    </div>
+                <div style="display: flex;flex-direction: row; align-items: center; margin: 20px; justify-content: space-between;">
+                    <div style="display: flex;flex-direction: row;">
+                        <div class="box" style="width: 35px; height: 35px; margin-right: 10px;">
+                            <!-- 프로필 사진 -->
+                            <!-- Feed에서 가져온 profile_image데이터 넣기 -->
+                            <img class="profile"
+                                src="{% get_media_prefix %}{{ feed.profile_image }}">
+                        </div>
                     <!-- 프로필 이름 -->
-                    <div>
-                        <!-- Feed에서 유저 id 가져오기 -->
-                        {{ feed.nickname }}
+                        <div>
+                            <!-- Feed에서 유저 id 가져오기 -->
+                            {{ feed.nickname }}
+                        </div>
                     </div>
+                    {% if feed.nickname == user.nickname %}
+                    <div style="display: flex;flex-direction: row;">
+                        <div style="margin-right: 10px;">
+                            <a href="/content/{{ feed.id }}/update/" style="color: black;">
+                                <span id="feed_edit_{{ feed.id }}" feed_id="{{ feed.id }}" class="material-icons">
+                                    edit
+                                </span>
+                            </a>
+                        </div>
+                        <div>
+                            <a href="/content/{{ feed.id }}/delete/" style="color: black;">
+                                <span id="feed_delete_{{ feed.id }}" feed_id="{{ feed.id }}" class="material-icons-outlined">
+                                    delete
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                    {% endif %}
                 </div>
                 <!-- 게시글 이미지 Feed에서 가져온 image데이터 넣기 -->
                 <div><img style="width: 100%"
@@ -160,7 +180,7 @@
                     <b>{{ feed.nickname }}</b> {{ feed.content }}
                 </div>
                 <!-- 댓글들 -->
-                <div id="reply_list_{{ feed.id }}">
+                <div id="reply_list_{{ feed.id }}" style="margin-bottom: 10px;">
                     {% for reply in feed.reply_list %}
                         <div style="margin: 0 20px;text-align: left;font-size: 14px">
                             <b>{{ reply.nickname }}</b> {{ reply.reply_content }}</div>
@@ -383,6 +403,16 @@
 
 <!-- 제이쿼리 스크립트 -->
 <script>
+    $("#feed_update_{{ feed.id }}").click(function (event) {
+        $('#first_modal').css({
+            display: 'flex'
+        });
+
+        $(document.body).css({
+            overflow: 'hidden'
+        });
+    });
+
     // 북마크 누른사람 아이디 가져오기
     $(".bookmark").click(function (event) {
         let feed_id = event.target.attributes.getNamedItem('feed_id').value;
