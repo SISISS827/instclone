@@ -22,6 +22,7 @@ class Join(APIView):
         password = request.data.get('password', None)
         #패스워드는 암호화를 해줘야함(암호화 = 단방향 : 암호화된 비밀번호 복구 x, 양방향 : 암호화된 비밀번호 복구 o)
         #패스워드가 자동으로 암호화되어서 들어간다.
+        
         User.objects.create(email=email,
                             nickname=nickname,
                             name=name,
@@ -83,3 +84,4 @@ class UploadProfile(APIView):
 
         #http 성공 응답코드 200
         return Response(status=200)
+
