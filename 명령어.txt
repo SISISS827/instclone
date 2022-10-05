@@ -1,0 +1,66 @@
+--환경설정--
+settings.py TEMPLATES / DIRS에 BASE_DIR / "templates" 기본 dir를 templates로 설정해놓기
+
+python -m venv "venv폴더이름" : 가상환경 폴더 만들기
+
+python --version : 파이썬 버전 확인
+
+pip list : 라이브러리들 확인
+
+venv/scripts/activate : venv(가상환경) 실행
+
+deactivate : 가상환경 끄기
+
+pip freeze > "라이브러리 정리 파일명" : 필요한 라이브러리들 확인
+
+pip install -r "라이브러리 정리 파일명" : 파일에 적혀있는 라이브러리들 자동으로 다운로드(가상환경 켜놓고 실행할 것!)
+
+django-admin startproject "폴더명" (.) : 장고 폴더 만들기 .이 있으면 현재 폴더 없으면 폴더 하나 더 .이 없는게 더 편리함
+
+python manage.py startapp "앱이름" : 원하는 이름의 앱 만들기
+
+python manage.py runserver : 장고 프로젝트 실행하기
+
+python manage.py makemigrations : 데이터베이스 마이그레이션 파일 생성
+
+python manage.py migrate : 데이터베이스 마이그레이션 적용
+
+python manage.py createsuperuser : 관리자 계정 생성하기
+
+python manage.py sqlmigrate 파일이름 번호 : sql구문으로 확인이 가능하다. 어떤식으로 테이블 되었는지 확인가능
+
+
+--git--
+commit은 수정해서 올렸다는 뜻.
+
+git init : 폴더에 git기능 넣기
+
+git remote add origin "git 레포지토리 주소" : 깃 주소 추가
+
+git add . : 폴더 내용 깃에 저장
+
+git commit -m "내가 commit에 전달하고 싶은 메세지"  : 커밋 + 메시지 저장
+
+git push origin "작업한 branch 이름" : add, commit 후 레포지토리에 푸쉬할 때 저장할 branch위치
+
+--full request--
+1. vscode git 레퍼지토리 복제 포크 후에 해당 git 복제(vscode경우 메인페이지에 복사하기 있음)
+
+2. git init
+
+3. git branch 변경이름
+
+4. git checkout 변경이름
+
+5.git add .
+
+6.git checkout 변경이름 (브랜치 변경) 들어가져 있는거 확인하면 안해도됨
+git switch 브랜이이름
+
+7. git commit -m 'init'
+
+8. git push -u origin 변경브랜치
+
+--pip--
+djangorestframework
+django-filter
