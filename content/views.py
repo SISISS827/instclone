@@ -211,7 +211,7 @@ class Main(APIView):
                                   ))
 
 
-        return render(request, "jinstagram/main.html", context=dict(feeds=feed_list, user=user))
+        return render(request, "palmTreeSns/main.html", context=dict(feeds=feed_list, user=user))
 
 
 class UploadFeed(APIView):
