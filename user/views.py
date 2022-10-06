@@ -1,6 +1,6 @@
 import os
 from uuid import uuid4
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import User
@@ -61,7 +61,7 @@ class LogOut(APIView):
     def get(self, request):
         #로그아웃 때 세션 기록을 지워줘야함 flush사용
         auth.logout(request)
-        return render(request, "user/login.html")
+        return redirect("/user/login")
 
 
 class UploadProfile(APIView):
