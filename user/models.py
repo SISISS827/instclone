@@ -15,9 +15,11 @@ class User(AbstractBaseUser):
     nickname = models.CharField(max_length=24, unique=True)
     name = models.CharField(max_length=24)
     email = models.EmailField(unique=True)
-
+    # symmetrical 대칭 (서로 팔로우가 되어있는지 아닌지)
+    follow = models.ManyToManyField('self', symmetrical=False)
     USERNAME_FIELD = 'nickname'
 
     class Meta:
         #db이름 정하기
         db_table = "User"
+    
